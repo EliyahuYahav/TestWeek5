@@ -27,7 +27,7 @@ router.route("/getAll/:class").get(authIfTeacher, GetAllStudents);
 
 /**
  * @swagger
- * /users/getAll/{class}:
+ * /users/getAverage/{class}:
  *  get:
  *      summary: Get all average of the users
  *      parameters:
@@ -39,10 +39,26 @@ router.route("/getAll/:class").get(authIfTeacher, GetAllStudents);
  *           type: string
  *      responses:
  *          200:
- *              description: A JSON of all the users
+ *              description: A JSON of all the average grads of users
  */
 router.route("/getAverage/:class").get(authIfTeacher, getAverage);
 
+/**
+ * @swagger
+ * /users/GetGrade/{id}:
+ *  get:
+ *      summary: Get all the users
+ *      parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: id of the user
+ *         schema:
+ *           type: string
+ *      responses:
+ *          200:
+ *              description: A JSON of average grad
+ */
 router.route("/GetGrade/:id").get(authIfTeacher, GetGrad);
 
 /**

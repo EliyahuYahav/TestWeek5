@@ -46,6 +46,7 @@ const registerNewStudent = (student) => __awaiter(void 0, void 0, void 0, functi
         if (!correctClass) {
             throw new Error("Cant find The Class");
         }
+        student.role = "student";
         const newStudent = (yield userModel_js_1.default.create(student));
         console.log(newStudent);
         if (!correctClass.student) {
