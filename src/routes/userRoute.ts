@@ -18,10 +18,10 @@ const router: Router = express.Router();
  *                      properties:
  *                          fullName:
  *                              type: string
- *                          password:
- *                              type: number
+ *                          email:
+ *                              type: string
  *      responses:
- *          201:
+ *          200:
  *              description: you login
  */
 router.route("/login").post(login);

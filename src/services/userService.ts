@@ -3,8 +3,8 @@ import bcrypt from 'bcrypt';
 
 export const registerNewTeacher = async (teacher: Teacher): Promise<Teacher | void> => {
     if (teacher) {
-        const allTeacher = await Classes.findOne({"fullName" : teacher.fullName})
-        if (allTeacher) {
+        const correctTeacher = await Classes.findOne({"fullName" : teacher.fullName})
+        if (correctTeacher) {
             throw new Error("this teacher have already class")
         }
         const newUser : Teacher = await Classes.create(teacher) as unknown as Teacher;
@@ -18,17 +18,22 @@ export const registerNewTeacher = async (teacher: Teacher): Promise<Teacher | vo
 
 export const registerNewStudent = async (student: Student): Promise<Student | void> => {
     if (student) {
-        const newUser : Student = await Classes.create(student) as unknown as Student;
-        if (newUser) {
-            return newUser;
+        const correctClass : Teacher | null = await Classes.findOne({"class" : student.class})
+        if (!correctClass) {
+            throw new Error('Cant find The Class')
         }
+        const newStudent : Student = await Classes.create(student) as unknown as Student;
+        correctClass.student.push(newStudent)
+        await correctClass.save();
+
+        return newStudent;
     }else{
         throw new Error("not found information")
     }
 };
 
 export const authenticateUser = async (fullName: string, email: string): Promise<Student | Teacher | null> => {
-  const user: Teacher | null = await Classes.findOne({"fullName": fullName, "email": fullName})
+  const user: Teacher | null = await Classes.findOne({"fullName": fullName, "email": email})
   if (user) {
     return user;
   }else{

@@ -16,8 +16,8 @@ exports.authenticateUser = exports.registerNewStudent = exports.registerNewTeach
 const userModel_js_1 = __importDefault(require("../models/userModel.js"));
 const registerNewTeacher = (teacher) => __awaiter(void 0, void 0, void 0, function* () {
     if (teacher) {
-        const allTeacher = yield userModel_js_1.default.findOne({ "fullName": teacher.fullName });
-        if (allTeacher) {
+        const correctTeacher = yield userModel_js_1.default.findOne({ "fullName": teacher.fullName });
+        if (correctTeacher) {
             throw new Error("this teacher have already class");
         }
         const newUser = yield userModel_js_1.default.create(teacher);
@@ -32,10 +32,14 @@ const registerNewTeacher = (teacher) => __awaiter(void 0, void 0, void 0, functi
 exports.registerNewTeacher = registerNewTeacher;
 const registerNewStudent = (student) => __awaiter(void 0, void 0, void 0, function* () {
     if (student) {
-        const newUser = yield userModel_js_1.default.create(student);
-        if (newUser) {
-            return newUser;
+        const correctClass = yield userModel_js_1.default.findOne({ "class": student.class });
+        if (!correctClass) {
+            throw new Error('Cant find The Class');
         }
+        const newStudent = yield userModel_js_1.default.create(student);
+        correctClass.student.push(newStudent);
+        yield correctClass.save();
+        return newStudent;
     }
     else {
         throw new Error("not found information");
@@ -43,7 +47,7 @@ const registerNewStudent = (student) => __awaiter(void 0, void 0, void 0, functi
 });
 exports.registerNewStudent = registerNewStudent;
 const authenticateUser = (fullName, email) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield userModel_js_1.default.findOne({ "fullName": fullName, "email": fullName });
+    const user = yield userModel_js_1.default.findOne({ "fullName": fullName, "email": email });
     if (user) {
         return user;
     }

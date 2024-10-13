@@ -21,10 +21,10 @@ const router = express_1.default.Router();
  *                      properties:
  *                          fullName:
  *                              type: string
- *                          password:
- *                              type: number
+ *                          email:
+ *                              type: string
  *      responses:
- *          201:
+ *          200:
  *              description: you login
  */
 router.route("/login").post(authController_js_1.login);

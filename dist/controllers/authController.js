@@ -49,7 +49,7 @@ const login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* ()
     try {
         const { fullName, email } = req.body;
         if (!fullName || !email) {
-            res.status(400).json({ error: "Username and password are required." });
+            res.status(400).json({ error: "Username and email are required." });
             return;
         }
         const user = yield (0, userService_js_1.authenticateUser)(fullName, email);

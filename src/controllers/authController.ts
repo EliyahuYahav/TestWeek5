@@ -37,7 +37,7 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
   try {
     const { fullName, email } = req.body;
     if (!fullName || !email) {
-      res.status(400).json({ error: "Username and password are required." });
+      res.status(400).json({ error: "Username and email are required." });
       return;
     }
 
