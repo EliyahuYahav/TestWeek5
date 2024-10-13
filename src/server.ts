@@ -1,11 +1,12 @@
 import express, { Application } from "express";
-import userRouter from './routes/userRoute.js'
-import connectDb from "./config/db.js";
+import userRouter from './routes/userRoute'
+import actionRoute from './routes/actionRoute'
+import connectDb from "./config/db";
 import dotenv from "dotenv";
 import cp from "cookie-parser";
-import { authMiddleware } from "./middleware/authMiddleware.js";
+import { authMiddleware } from "./middleware/authMiddleware";
 import swaggerUi from 'swagger-ui-express'
-import {swaggerSpec} from './swagger.js'
+import {swaggerSpec} from './swagger'
 
 dotenv.config();
 
@@ -19,6 +20,6 @@ app.use(cp());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/', userRouter)
-// app.use('/users', authMiddleware, actionRoute)
+app.use('/users', authMiddleware, actionRoute)
 
 app.listen(PORT, ()=>{console.log(`server listen on port ${PORT}.`)})

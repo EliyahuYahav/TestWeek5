@@ -16,13 +16,21 @@ exports.authenticateUser = exports.registerNewStudent = exports.registerNewTeach
 const userModel_js_1 = __importDefault(require("../models/userModel.js"));
 const registerNewTeacher = (teacher) => __awaiter(void 0, void 0, void 0, function* () {
     if (teacher) {
-        const correctTeacher = yield userModel_js_1.default.findOne({ "fullName": teacher.fullName });
+        const correctTeacher = yield userModel_js_1.default.findOne({
+            fullName: teacher.fullName,
+        });
         if (correctTeacher) {
             throw new Error("this teacher have already class");
         }
-        const newUser = yield userModel_js_1.default.create(teacher);
-        if (newUser) {
-            return newUser;
+        teacher.student = [];
+        console.log(teacher);
+        const newTeacher = yield userModel_js_1.default.create(Object.assign({}, teacher));
+        // const newUser: any = await Classes.create(teacher);
+        if (newTeacher) {
+            return newTeacher;
+        }
+        else {
+            throw new Error("Cannot create new teacher");
         }
     }
     else {
@@ -32,11 +40,17 @@ const registerNewTeacher = (teacher) => __awaiter(void 0, void 0, void 0, functi
 exports.registerNewTeacher = registerNewTeacher;
 const registerNewStudent = (student) => __awaiter(void 0, void 0, void 0, function* () {
     if (student) {
-        const correctClass = yield userModel_js_1.default.findOne({ "class": student.class });
+        const correctClass = yield userModel_js_1.default.findOne({
+            class: student.class,
+        });
         if (!correctClass) {
-            throw new Error('Cant find The Class');
+            throw new Error("Cant find The Class");
         }
-        const newStudent = yield userModel_js_1.default.create(student);
+        const newStudent = (yield userModel_js_1.default.create(student));
+        console.log(newStudent);
+        if (!correctClass.student) {
+            correctClass.student = [];
+        }
         correctClass.student.push(newStudent);
         yield correctClass.save();
         return newStudent;
@@ -46,13 +60,18 @@ const registerNewStudent = (student) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.registerNewStudent = registerNewStudent;
-const authenticateUser = (fullName, email) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield userModel_js_1.default.findOne({ "fullName": fullName, "email": email });
+const authenticateUser = (fullName, password) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield userModel_js_1.default.findOne({
+        fullName: fullName,
+        password: password,
+    });
     if (user) {
         return user;
     }
     else {
-        const user = yield userModel_js_1.default.findOne({ "student": { "fullName": fullName, "email": fullName } });
+        const user = yield userModel_js_1.default.findOne({
+            student: { fullName: fullName, password: password },
+        });
         if (user) {
             return user;
         }

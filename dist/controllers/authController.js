@@ -23,7 +23,7 @@ const registerTeacher = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
     try {
         const user = req.body;
         const newUser = yield (0, userService_js_1.registerNewTeacher)(user);
-        res.status(201).json(new response_js_1.ResponseStructure(true, newUser, "user created"));
+        res.status(201).json(new response_js_1.ResponseStructure(true, newUser._id, "Teacher created"));
     }
     catch (error) {
         next(error);
@@ -33,12 +33,8 @@ exports.registerTeacher = registerTeacher;
 const registerStudent = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const user = req.body;
-        if (!user.fullName || !user.password) {
-            res.status(400).json({ error: "Username and password are required." });
-            return;
-        }
         const newUser = yield (0, userService_js_1.registerNewStudent)(user);
-        res.status(201).json({ massage: "User is register", newUser: newUser });
+        res.status(201).json(new response_js_1.ResponseStructure(true, newUser, "Student created"));
     }
     catch (error) {
         next(error);
@@ -47,12 +43,12 @@ const registerStudent = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
 exports.registerStudent = registerStudent;
 const login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { fullName, email } = req.body;
-        if (!fullName || !email) {
-            res.status(400).json({ error: "Username and email are required." });
+        const { fullName, password } = req.body;
+        if (!fullName || !password) {
+            res.status(400).json({ error: "Username and password are required." });
             return;
         }
-        const user = yield (0, userService_js_1.authenticateUser)(fullName, email);
+        const user = yield (0, userService_js_1.authenticateUser)(fullName, password);
         if (user) {
             const token = jsonwebtoken_1.default.sign({ id: user._id, role: user.role }, JWT_SECRET, { expiresIn: "1h" });
             res.cookie('token', token, {

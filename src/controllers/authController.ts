@@ -11,9 +11,9 @@ const JWT_SECRET: string = process.env.JWT_SECRET || "default_secret";
 
 export const registerTeacher = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const user: Teacher = req.body;
-    const newUser = await registerNewTeacher(user);
-    res.status(201).json(new ResponseStructure(true, newUser, "user created"));
+    const user: Teacher = req.body;    
+    const newUser: Teacher = await registerNewTeacher(user);
+    res.status(201).json(new ResponseStructure(true, newUser._id, "Teacher created"));
   } catch (error: any) {
     next(error)
   }
@@ -22,12 +22,8 @@ export const registerTeacher = async (req: Request, res: Response, next: NextFun
 export const registerStudent = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const user: Student = req.body;
-      if (!user.fullName || !user.password) {
-        res.status(400).json({ error: "Username and password are required." });
-        return;
-      }
       const newUser = await registerNewStudent(user);
-      res.status(201).json({ massage: "User is register", newUser: newUser });
+      res.status(201).json(new ResponseStructure(true, newUser, "Student created"));
     } catch (error: any) {
       next(error)
     }
@@ -35,13 +31,13 @@ export const registerStudent = async (req: Request, res: Response, next: NextFun
 
 export const login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { fullName, email } = req.body;
-    if (!fullName || !email) {
-      res.status(400).json({ error: "Username and email are required." });
+    const { fullName, password } = req.body;
+    if (!fullName || !password) {
+      res.status(400).json({ error: "Username and password are required." });
       return;
     }
 
-    const user: Teacher|Student | null = await authenticateUser(fullName, email);
+    const user: Teacher|Student | null = await authenticateUser(fullName, password);
     if (user) {
       const token = jwt.sign({ id : user._id, role : user.role},JWT_SECRET,{ expiresIn: "1h" });
       res.cookie('token', token, {

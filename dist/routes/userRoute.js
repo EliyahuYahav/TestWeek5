@@ -21,8 +21,8 @@ const router = express_1.default.Router();
  *                      properties:
  *                          fullName:
  *                              type: string
- *                          email:
- *                              type: string
+ *                          password:
+ *                              type: number
  *      responses:
  *          200:
  *              description: you login

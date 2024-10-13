@@ -1,30 +1,29 @@
 import express, { Application, Router } from "express";
-import { } from "../controllers/actionController.js";
+import { GetAllStudents } from "../controllers/actionController";
+import { authIfTeacher } from "../middleware/authMiddleware";
+// import { } from "../controllers/actionController.js";
 
 const app: Application = express();
 const router: Router = express.Router();
 
 /**
+/**
  * @swagger
- * /login:
- *  post:
- *      summary: login user
- *      requestBody:
- *          required: true
- *          content:
- *              application/json:
- *                  schema:
- *                      type: object
- *                      properties:
- *                          fullName:
- *                              type: string
- *                          email:
- *                              type: string
+ * /users/getAll/{class}:
+ *  get:
+ *      summary: Get all the users
+ *      parameters:
+ *       - in: path
+ *         name: class
+ *         required: true
+ *         description: class of the users to delete grad
+ *         schema:
+ *           type: string
  *      responses:
  *          200:
- *              description: you login
+ *              description: A JSON of all the users
  */
-router.route("/getAll").get();
+router.route("/getAll/:class").get(authIfTeacher, GetAllStudents);
 
 
 export default router;

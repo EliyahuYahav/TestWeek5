@@ -4,19 +4,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const userRoute_js_1 = __importDefault(require("./routes/userRoute.js"));
-const db_js_1 = __importDefault(require("./config/db.js"));
+const userRoute_1 = __importDefault(require("./routes/userRoute"));
+const actionRoute_1 = __importDefault(require("./routes/actionRoute"));
+const db_1 = __importDefault(require("./config/db"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
+const authMiddleware_1 = require("./middleware/authMiddleware");
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
-const swagger_js_1 = require("./swagger.js");
+const swagger_1 = require("./swagger");
 dotenv_1.default.config();
 const PORT = process.env.PORT || 3000;
 const app = (0, express_1.default)();
-(0, db_js_1.default)();
+(0, db_1.default)();
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
-app.use('/api-docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_js_1.swaggerSpec));
-app.use('/', userRoute_js_1.default);
-// app.use('/users', authMiddleware, actionRoute)
+app.use('/api-docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_1.swaggerSpec));
+app.use('/', userRoute_1.default);
+app.use('/users', authMiddleware_1.authMiddleware, actionRoute_1.default);
 app.listen(PORT, () => { console.log(`server listen on port ${PORT}.`); });
