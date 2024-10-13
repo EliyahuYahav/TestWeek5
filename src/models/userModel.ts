@@ -40,9 +40,4 @@ export interface Teacher{
     _id?:string;
 }
 
-export interface User{
-    fullName: string;
-    email: string;
-}
-
 export default mongoose.model("Classes", TeacherSchema);

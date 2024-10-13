@@ -1,4 +1,4 @@
-import Classes, { Student, Teacher, User } from "../models/userModel.js";
+import Classes, { Student, Teacher } from "../models/userModel.js";
 import bcrypt from 'bcrypt';
 
 export const registerNewTeacher = async (teacher: Teacher): Promise<Teacher | void> => {

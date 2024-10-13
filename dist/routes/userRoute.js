@@ -1,9 +1,12 @@
-import express, { Application, Router } from "express";
-import { login, registerStudent, registerTeacher } from "../controllers/authController.js";
-
-const app: Application = express();
-const router: Router = express.Router();
-
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const authController_js_1 = require("../controllers/authController.js");
+const app = (0, express_1.default)();
+const router = express_1.default.Router();
 /**
  * @swagger
  * /login:
@@ -24,8 +27,7 @@ const router: Router = express.Router();
  *          201:
  *              description: you login
  */
-router.route("/login").post(login);
-
+router.route("/login").post(authController_js_1.login);
 /**
  * @swagger
  * /register/teacher:
@@ -50,8 +52,7 @@ router.route("/login").post(login);
  *          201:
  *              description: new Teacher is added
  */
-router.route("/register/teacher").post(registerTeacher);
-
+router.route("/register/teacher").post(authController_js_1.registerTeacher);
 /**
  * @swagger
  * /register/student:
@@ -76,7 +77,5 @@ router.route("/register/teacher").post(registerTeacher);
  *          201:
  *              description: new Student is added
  */
-router.route("/register/student").post(registerStudent);
-
-
-export default router;
+router.route("/register/student").post(authController_js_1.registerStudent);
+exports.default = router;

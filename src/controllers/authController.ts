@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { Student, Teacher, User } from "../models/userModel.js";
+import { Student, Teacher } from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 import { authenticateUser, registerNewStudent, registerNewTeacher } from "../services/userService.js";
 import dotenv from "dotenv";

@@ -1,6 +1,5 @@
 import express, { Application } from "express";
 import userRouter from './routes/userRoute.js'
-import actionRoute from './routes/actionRoute.js'
 import connectDb from "./config/db.js";
 import dotenv from "dotenv";
 import cp from "cookie-parser";
@@ -20,6 +19,6 @@ app.use(cp());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/', userRouter)
-app.use('/users', authMiddleware, actionRoute)
+// app.use('/users', authMiddleware, actionRoute)
 
 app.listen(PORT, ()=>{console.log(`server listen on port ${PORT}.`)})

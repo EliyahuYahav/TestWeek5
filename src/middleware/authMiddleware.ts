@@ -7,11 +7,7 @@ dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
 
-export const authMiddleware = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void => {
+export const authMiddleware = ( req: Request, res: Response, next: NextFunction): void => {
   const token = req.cookies?.token;
   if (!token) {
     res.status(401).json({ message: "Access token missing" });
@@ -26,11 +22,7 @@ export const authMiddleware = (
   }
 };
 
-export const authIfTeacher = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void => {
+export const authIfTeacher = ( req: Request, res: Response, next: NextFunction): void => {
   const token = req.cookies?.token;
   if (!token) {
     res.status(401).json({ message: "Access token missing" });
@@ -48,11 +40,7 @@ export const authIfTeacher = (
   }
 };
 
-export const authIfStudent = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void => {
+export const authIfStudent = ( req: Request, res: Response, next: NextFunction): void => {
   const token = req.cookies?.token;
   if (!token) {
     res.status(401).json({ message: "Access token missing" });
